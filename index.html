@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>meu perfil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <nav id="menu">
+            perfil | projetos | experiencia | repositório github | conteúdo
+        </nav>
+        </br>
+        <p>digite um login do github e encontre informações sobre ele</p>
+        <form id="form">
+            <input type="search" id="pesquisa">
+            <input type="submit" id="botao">
+        </form>
+        <div id="resposta">
+            <h2>RESPOSTA DA PESQUISA:</h2>
+            <p id="nome">NOME:</p>
+            <p id="login">LOGIN:</p>
+            <p id="bio">BIO:</p>
+        </div>
+    </header>
+    <main>
+        <img src="perfil.jpeg" alt="fotoperfil" id="foto">
+        <div id="perfil"></div>
+        <div id="redes">
+            <h1>Redes Sociais</h1>
+            <a href="https://www.instagram.com/mayrrangel03/"><img src="logoinsta.jpeg" alt="insta" id="insta"></a>
+            <a href="https://br.linkedin.com/in/mayara-roque-rangel-3b6693197"><img src="logolinkedin.jpeg"
+                    alt="linkedin" id="linkedin"></a>
+            <a href="https://github.com/mayrrangel03"><img src="githublogo.png" alt="github" id="githublogo"></a>
+        </div>
+        <h1 id="titulo">EXPERIÊNCIA</h1>
+        <img src="uberlogo.jpeg" alt="uber" id="uber">
+        <section id="exp">
+            <h2>Jovem Aprendiz-UBER</h2>
+            <p>Jovem aprendiz na área administrativa e recepção de motoristas cadastrados na Uber.</p>
+            <h2>Abril 2021- Até o momento</h2>
+        </section>
+        <div id="github">
+            <h1 id="titulo">Repositórios GitHub</h1>
+            <div id="repositorio"></div>
+            <h2>AQUI ESTÁ UMAS FOTOS DOS REPOSITÓRIOS QUE ESTÃO NO GITHUB:</h2>
+            <img src="projeto1.jpeg" alt="projum" id="um">
+            <br />
+            <img src="projeto2.jpeg" alt="projdois" id="dois">
+            <br />
+            <img src="projeto3.jpeg" alt="projtres" id="tres">
+        </div>
+        <h1 id="titulo">Recomendações de Conteúdo</h1>
+        <iframe width="300" height="205" src="https://www.youtube.com/embed/vPNIAJ9B4hg" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen id="v1"></iframe>
+        <iframe width="300" height="205" src="https://www.youtube.com/embed/1-w1RfGIov4" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen id="v2"></iframe>
+        <iframe width="300" height="205" src="https://www.youtube.com/embed/S9uPNppGsGo" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen id="v3"></iframe>
+
+    </main>
+    <footer id="footer">
+        <p>Copyright-2021- Diciplina de Densenvolvimento de Interfaces Web</p>
+    </footer>
+    <script>
+        function success() {
+            let obj = JSON.parse(this.responseText);
+            let rep = JSON.parse(this.responseText);
+            let texto = `Nome: ${obj.name} \n\n Login: ${obj.login} \n\n Biografia: ${obj.bio} \n\n`;
+            let textrep = ` SEGUE LINK DO REPOSITORIO: ${obj.repos_url}`
+            document.getElementById('perfil').innerText = texto;
+            document.getElementById('repositorio').innerText = textrep;
+        }
+        function error(err) { console.log('Erro:', err); }
+        var xhr = new XMLHttpRequest();
+        xhr.onload = success;
+        xhr.onerror = error;
+        xhr.open('GET', 'https://api.github.com/users/mayrrangel03');
+        xhr.send();
+        document.getElementById("botao").addEventListener("click", function (evento) {
+            evento.preventDefault()
+            let username = document.getElementById('pesquisa').value
+            getusuario(username)
+        });
+        const getusuario = (username) => {
+            fetch(`https://api.github.com/users/${username}`).then(response => response.json()).then(data => {
+                if (data.name) {
+                    document.getElementById('nome').innerText = data.name
+                document.getElementById('login').innerText = data.login
+                document.getElementById('bio').innerText = data.bio
+                } else {
+                    alert("USUARIO NÃO ENCONTRADO")
+                }
+
+            }
+            ).catch(error => alert(error.message));
+
+        }
+    </script>
+
+</body>
+
+</html>
